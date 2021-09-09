@@ -4,60 +4,62 @@ package memorymanagement;
 import java.util.ArrayList;
 
 public class PCB {
-    private ArrayList <Process> novo = new ArrayList<>();
     private ArrayList <Process> ready = new ArrayList<>();
-    private ArrayList <Process> waiting = new ArrayList<>();
     private ArrayList <Process> running = new ArrayList<>();
     private ArrayList <Process> terminated = new ArrayList<>();
     
     public void addProcess(Process process)
     {
-        novo.add(process);
+        if (process.getPriority() == 5)
+        {
+            ready.add(0, process);
+        }
+        ready.add(process);
     }
     
-    public Process getProcess (Process process)
+    public Process getProcess (int queue)
     {   
-        if (process.getQueue() == 0)
-        {
-            return novo.get(0);
-        }
-        if (process.getQueue() == 1)
+        if (queue == 0)
         {
             return ready.get(0);
         }
-        if (process.getQueue() == 2)
-        {
-            return waiting.get(0);
-        }
-        if (process.getQueue() == 3)
+        if (queue == 1)
         {
             return running.get(0);
         }
-        if (process.getQueue() == 4)
+        if (queue == 2)
         {
             return terminated.get(0);
         }
         return null;
     }
+    
 
     public void changeQueue (Process process, int setQueue) 
-    {
-        process.setQueue(setQueue);
-        if (process.getQueue() == 1)
-        {
-            ready.add(process);
-        }
-        if (process.getQueue() == 2)
-        {
-            waiting.add(process);
-        }
-        if (process.getQueue() == 3)
+    {      
+        if (process.getQueue() == 0 && setQueue == 1)
         {
             running.add(process);
+            ready.remove(process);
+            process.setQueue(setQueue);
         }
-        if (process.getQueue() == 4)
+        if (process.getQueue() == 0 && setQueue == 2)
         {
             terminated.add(process);
+            ready.remove(process);
+            process.setQueue(setQueue);
+        }
+        if (process.getQueue() == 1 && setQueue == 0)
+        {
+            ready.add(process);
+            running.remove(process);
+            process.setQueue(setQueue);
+        }
+        if (process.getQueue() == 1 && setQueue == 2)
+        {
+            terminated.add(process);
+            running.remove(process);
+            process.setQueue(setQueue);
         }
     }
 }
