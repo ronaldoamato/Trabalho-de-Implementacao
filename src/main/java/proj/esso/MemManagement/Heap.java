@@ -6,16 +6,21 @@ import java.util.Arrays;
 
 public class Heap {
     private int memSize = 128;
-    private boolean[] memory = new boolean [memSize];
+    private boolean[] memTable = new boolean [memSize];
+    private Process[] memory = new Process[memSize];
     private int size;
-    private AllocProcess alloc = null;
+    //private AllocProcess alloc = null;
+    
+    public Heap(){
+        
+    }
     
     public Heap(int size){
         this.size = size;
     }
 
     public boolean[] getMemory() {
-        return memory;
+        return memTable;
     }
 
    /* public int getSize() {
@@ -25,21 +30,23 @@ public class Heap {
     public void alloc(Process process){ //Algoritmo first fit
         int count = 0;
         for (int i=0; i<memSize; i++) {
-            if (memory[i]==false)
+            if (memTable[i]==false)
             {
                 for (int j = 0; j<process.getMemSize(); j++){
-                    if (memory[j]==false){
+                    if (memTable[j]==false){
                         count++;
                     }
                 }
                 if (count == process.getMemSize()){
                     for (int k=i; k<process.getMemSize(); k++){
-                        memory[k]=true;
+                        memTable[k]=true;
+                        memory[k]= process;
                         
                     }
-                    alloc.setProcess(process);
-                    alloc.setStart(i);
-                    alloc.setEnd(i+process.getMemSize());
+                    count = 0;
+                    //alloc.setProcess(process);
+                    //alloc.setStart(i);
+                    //alloc.setEnd(i+process.getMemSize());
                 }   
             }
         }

@@ -2,8 +2,14 @@
 package memorymanagement;
 
 public class Process{
+
     private int memSize, execTime, queue, mem, priority;
     private String id;
+    
+    
+    public Process(){
+        
+    }
     
     public Process(int mem, int time, String id, int priority)        
     {
@@ -42,8 +48,13 @@ public class Process{
         return id;
     }
     
+    public void setExecTime(int execTime) {
+        this.execTime = execTime;
+    }
+    
     public String toString()
     {
-        return this.id+"";
+        return this.id+"\n"+execTime+"\n"+memSize+"\n"+priority+"\n";
+        
     }
 }

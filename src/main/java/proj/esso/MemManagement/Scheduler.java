@@ -1,36 +1,51 @@
 
 package memorymanagement;
 
-class Scheduler {
-    //static AllocProcess alloc;
-    static PCB set_Process;
-    static Heap alloc_process;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+//class Scheduler implements Runnable{
+class Scheduler{
+    PCB set_Process = new PCB();
+    Heap alloc_process = new Heap();
     
-    public static void main(String args[]){
+    public void vai(PCB get_Process){
         
-    PCB get_Process = null;
+    get_Process.printerReady();
     Process process = get_Process.getProcess(0);
     
     while (process != null){
-        alloc_process.alloc(process); //faz a alocação em memoria
-        get_Process.changeQueue(process, 1);
         
-        /*
-        atribui o processo para a cpu
-        */ 
+        Core execute = new Core();
         
-        if (process.getExecTime() > 0){ //Se o processo não terminou, volta para a fila ready
+        alloc_process.alloc(process);                   //faz a alocação em memoria
+        get_Process.changeQueue(process, 1);            //altera para fila running
+       
+        get_Process.printerRunning();
+        try {
+            execute.exec(process);                          //executa o processo
+            get_Process.printerRunning();
             
-            if (process.getPriority() == 5){ //Se o processo tem alta prioridade, será selecionado primeiro na fila.
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Scheduler.class.getName()).log(Level.SEVERE, null, ex);
+            
+        }
+        
+        if (process.getExecTime() > 0){                 //Se o processo não terminou, volta para a fila ready
+            
+            if (process.getPriority() == 5){            //Se o processo tem alta prioridade, será selecionado primeiro na fila.
                 set_Process.addProcess(process);
             } 
             get_Process.changeQueue(process, 0);
         }
         else {
-            get_Process.changeQueue(process, 2); //Se o processo finalizou o tempo de execução, vai pra fila de terminated.
+            get_Process.changeQueue(process, 2);        //Se o processo finalizou o tempo de execução, vai pra fila de terminated.
+            //get_Process.printerTerminated();
         }
         
-        process = get_Process.getProcess(0);
+        process = get_Process.getProcess(0);            //busca o próximo processo da fila ready
     }
   }   
+
+    
 }
