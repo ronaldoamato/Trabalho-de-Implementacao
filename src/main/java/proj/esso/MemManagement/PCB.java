@@ -1,23 +1,105 @@
 
 package memorymanagement;
 
-import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.LinkedList;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 public class PCB {
     public LinkedList <Process> ready = new LinkedList<Process>();
     public LinkedList <Process> running = new LinkedList<Process>();
     public LinkedList <Process> terminated = new LinkedList<Process>();
     
+    
+    /*public void addProcess(Process process) throws InterruptedException 
+    {   
+        if (process.getPriority() == 5){
+            ready.addFirst(process);
+        }  
+                
+        if (process.getPriority() == 4){
+            int count = 0;
+                if (ready.isEmpty()){
+                    ready.addFirst(process);
+                }
+                else{
+                    Process p = ready.getFirst();
+                    if (process.getPriority() >= p.getPriority()){
+                        ready.addFirst(process);
+                    }
+                    else{
+                        Iterator<Process> it = ready.iterator();
+                            while (it.hasNext()){
+                                count++;
+                                p = it.next(); 
+                                if (process.getPriority() <= p.getPriority()){
+                                    ready.add(count, process);
+                        }
+                    }
+                }
+            }
+        }
+
+                
+        if (process.getPriority() == 3){
+            int count = 0;
+                if (ready.isEmpty()){
+                    ready.addFirst(process);
+                }
+                else{
+                    Process p = ready.getFirst();
+                    if (process.getPriority() >= p.getPriority()){
+                        ready.addFirst(process);
+                    }
+                    else{
+                        Iterator<Process> it = ready.iterator();
+                            while (it.hasNext()){
+                                count++;
+                                p = it.next(); 
+                                if (process.getPriority() <= p.getPriority()){
+                                    ready.add(count, process);
+                        }
+                    }
+                }
+            }
+        }
+                
+        if (process.getPriority() == 2){
+            int count = 0;
+                if (ready.isEmpty()){
+                    ready.addFirst(process);
+                }
+                else{
+                    Process p = ready.getFirst();
+                    if (process.getPriority() >= p.getPriority()){
+                        ready.addFirst(process);
+                    }
+                    else{
+                        Iterator<Process> it = ready.iterator();
+                            while (it.hasNext()){
+                                count++;
+                                p = it.next(); 
+                                if (process.getPriority() <= p.getPriority()){
+                                    ready.add(count, process);
+                        }
+                    }
+                }
+            }
+        }
+        
+        if (process.getPriority() == 1){
+            ready.add(process);
+        }    
+    }*/
+    
     public void addProcess(Process process)
     {
-        if (process.getPriority() == 5)
+        /*if (process.getPriority() == 5)
         {
-            /*for (int i = 0; i<ready.size(); i++){
-                ready.set(i+1, ready.get(i));
-            }*/
             ready.addFirst(process);
-        }
+        }*/
         ready.add(process);
     }
     
@@ -64,13 +146,13 @@ public class PCB {
         }
         if (process.getQueue() == 1 && setQueue == 0)
         {
-            ready.add(process);
+            ready.addLast(process);
             running.remove(process);
             process.setQueue(setQueue);
         }
         if (process.getQueue() == 1 && setQueue == 2)
         {
-            terminated.add(process);
+            terminated.addLast(process);
             running.remove(process);
             process.setQueue(setQueue);
         }
@@ -88,6 +170,7 @@ public class PCB {
             System.out.println("Priority: "+p.getPriority());
             System.out.println("Queue: "+p.getQueue());
             System.out.println("TimeExec: "+p.getExecTime());
+            System.out.println("\n");
         }
     }
     
@@ -98,6 +181,7 @@ public class PCB {
             System.out.println("Priority: "+p.getPriority());
             System.out.println("Queue: "+p.getQueue());
             System.out.println("TimeExec: "+p.getExecTime());
+            System.out.println("\n");
         }
     }
     
@@ -108,6 +192,7 @@ public class PCB {
             System.out.println("Priority: "+p.getPriority());
             System.out.println("Queue: "+p.getQueue());
             System.out.println("TimeExec: "+p.getExecTime());
+            System.out.println("\n");
         }
     }
 }

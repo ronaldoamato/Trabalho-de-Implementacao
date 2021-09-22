@@ -34,9 +34,5 @@ public class MemoryManagement {
         //}
         threadExecutor.shutdown();
         //threadExecutor.execute(play);
-        
-        
     }
-    
-    
 }

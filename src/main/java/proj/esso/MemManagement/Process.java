@@ -18,6 +18,7 @@ public class Process{
         this.id = id;
         this.queue = 0;
         this.priority = priority;
+        
     }
 
     public int getMem() {

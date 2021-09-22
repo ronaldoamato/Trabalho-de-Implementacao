@@ -6,25 +6,22 @@ import java.util.logging.Logger;
 
 //class Scheduler implements Runnable{
 class Scheduler{
+    
+    
     PCB set_Process = new PCB();
-    Heap alloc_process = new Heap();
     
-    public void vai(PCB get_Process){
-        
-    get_Process.printerReady();
+    public void vai(PCB get_Process) throws InterruptedException{
+
     Process process = get_Process.getProcess(0);
-    
+    Heap alloc_process = new Heap();
+    Core execute = new Core();
+
     while (process != null){
-        
-        Core execute = new Core();
-        
         alloc_process.alloc(process);                   //faz a alocação em memoria
         get_Process.changeQueue(process, 1);            //altera para fila running
        
-        get_Process.printerRunning();
         try {
             execute.exec(process);                          //executa o processo
-            get_Process.printerRunning();
             
         } catch (InterruptedException ex) {
             Logger.getLogger(Scheduler.class.getName()).log(Level.SEVERE, null, ex);
@@ -33,18 +30,20 @@ class Scheduler{
         
         if (process.getExecTime() > 0){                 //Se o processo não terminou, volta para a fila ready
             
-            if (process.getPriority() == 5){            //Se o processo tem alta prioridade, será selecionado primeiro na fila.
-                set_Process.addProcess(process);
-            } 
+            /*if (process.getPriority() == 5){            //Se o processo tem alta prioridade, será selecionado primeiro na fila.
+                this.set_Process.addProcess(process);
+            }*/ 
             get_Process.changeQueue(process, 0);
         }
         else {
             get_Process.changeQueue(process, 2);        //Se o processo finalizou o tempo de execução, vai pra fila de terminated.
-            //get_Process.printerTerminated();
+            //alloc_process.desalloc(process);
         }
         
         process = get_Process.getProcess(0);            //busca o próximo processo da fila ready
     }
+    //System.out.println("Memoria Desalocada: ");
+    alloc_process.printMemory();
   }   
 
     

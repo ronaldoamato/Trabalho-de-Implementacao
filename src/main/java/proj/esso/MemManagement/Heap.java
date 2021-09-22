@@ -2,14 +2,23 @@
 package memorymanagement;
 
 import java.util.Arrays;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 
 public class Heap {
-    private int memSize = 128;
+    private int memSize = 50;
     private boolean[] memTable = new boolean [memSize];
     private Process[] memory = new Process[memSize];
     private int size;
-    //private AllocProcess alloc = null;
+    
+    private final Lock lock = new ReentrantLock();
+    private final Condition reading = lock.newCondition();
+    private final Condition writing = lock.newCondition();
+    
+    private boolean read = false, write = false;
+    
     
     public Heap(){
         
@@ -23,33 +32,55 @@ public class Heap {
         return memTable;
     }
 
-   /* public int getSize() {
-        return this.size;
-    }*/
     
     public void alloc(Process process){ //Algoritmo first fit
-        int count = 0;
-        for (int i=0; i<memSize; i++) {
-            if (memTable[i]==false)
-            {
-                for (int j = 0; j<process.getMemSize(); j++){
-                    if (memTable[j]==false){
-                        count++;
+        int count = 0, i, j;
+        
+        for (i=0; i<memSize; i++) {
+            if (memTable[i]==false){
+                
+                for (j = 0; j<process.getMemSize(); j++){
+                    if ((memTable[j]==false)){
+                        count++;    
+                    }
+                    if (count == process.getMemSize()){
+                        break;
                     }
                 }
-                if (count == process.getMemSize()){
-                    for (int k=i; k<process.getMemSize(); k++){
-                        memTable[k]=true;
-                        memory[k]= process;
-                        
-                    }
-                    count = 0;
-                    //alloc.setProcess(process);
-                    //alloc.setStart(i);
-                    //alloc.setEnd(i+process.getMemSize());
-                }   
+                for (int k = i; count >= 0; k++){
+                    setStatus(k, true);
+                    memory[k]=process;
+                    count--;
+                }
+               break;  
             }
         }
+        //System.out.println("Memoria Alocada:");
+        //printMemory();
+        
+    }
+    
+    public void desalloc(Process process){
+        for (int i = 0; i<memSize; i++){
+            if (memory[i] == process){
+                memTable[i] = false;
+            }
+        }
+    }
+    
+    public void printMemory(){
+        for (int i = 0; i<memSize; i++){
+            if (memTable[i]!=false){
+                    System.out.println("Status: "+memTable[i]);
+                    System.out.println("Position: "+i);
+                    System.out.println("ID: "+memory[i].getId());
+            }
+        }
+        System.out.println("\n");
+    }
+    
+    public void setStatus(int position, boolean status){
+        memTable[position] = status;
     }
     
     
