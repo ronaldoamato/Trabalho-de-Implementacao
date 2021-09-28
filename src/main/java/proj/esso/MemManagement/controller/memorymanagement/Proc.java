@@ -1,17 +1,17 @@
 
-package memorymanagement;
+package proj.esso.MemManagement.controller.memorymanagement;
 
-public class Process{
+public class Proc {
 
     private int memSize, execTime, queue, mem, priority;
     private String id;
     
     
-    public Process(){
+    public Proc(){
         
     }
     
-    public Process(int mem, int time, String id, int priority)        
+    public Proc(int mem, int time, String id, int priority)
     {
         this.memSize = mem;
         this.execTime = time;

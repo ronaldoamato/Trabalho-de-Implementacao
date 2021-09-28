@@ -1,4 +1,4 @@
-package proj.esso.MemManagement;
+package proj.esso.MemManagement.controller.memorymanagement;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

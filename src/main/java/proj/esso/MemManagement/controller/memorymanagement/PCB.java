@@ -1,5 +1,5 @@
 
-package memorymanagement;
+package proj.esso.MemManagement.controller.memorymanagement;
 
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -8,9 +8,9 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class PCB {
-    public LinkedList <Process> ready = new LinkedList<Process>();
-    public LinkedList <Process> running = new LinkedList<Process>();
-    public LinkedList <Process> terminated = new LinkedList<Process>();
+    public LinkedList <Proc> ready = new LinkedList<Proc>();
+    public LinkedList <Proc> running = new LinkedList<Proc>();
+    public LinkedList <Proc> terminated = new LinkedList<Proc>();
     
     
     /*public void addProcess(Process process) throws InterruptedException 
@@ -94,7 +94,7 @@ public class PCB {
         }    
     }*/
     
-    public void addProcess(Process process)
+    public void addProcess(Proc process)
     {
         /*if (process.getPriority() == 5)
         {
@@ -103,7 +103,7 @@ public class PCB {
         ready.add(process);
     }
     
-    public Process getProcess (int queue)
+    public Proc getProcess (int queue)
     {   
         if (queue == 0)
         {
@@ -130,7 +130,7 @@ public class PCB {
     }
     
 
-    public void changeQueue (Process process, int setQueue) 
+    public void changeQueue (Proc process, int setQueue)
     {      
         if (process.getQueue() == 0 && setQueue == 1)
         {
@@ -164,7 +164,7 @@ public class PCB {
     }
     
     public void printerReady(){
-        for (Process p:ready){
+        for (Proc p:ready){
             System.out.println("ID: "+p.getId());
             System.out.println("MemSize: "+p.getMemSize());
             System.out.println("Priority: "+p.getPriority());
@@ -175,7 +175,7 @@ public class PCB {
     }
     
     public void printerRunning(){
-        for (Process p:running){
+        for (Proc p:running){
             System.out.println("ID: "+p.getId());
             System.out.println("MemSize: "+p.getMemSize());
             System.out.println("Priority: "+p.getPriority());
@@ -186,7 +186,7 @@ public class PCB {
     }
     
     public void printerTerminated(){
-        for (Process p:terminated){
+        for (Proc p:terminated){
             System.out.println("ID: "+p.getId());
             System.out.println("MemSize: "+p.getMemSize());
             System.out.println("Priority: "+p.getPriority());

@@ -1,5 +1,5 @@
 
-package memorymanagement;
+package proj.esso.MemManagement.controller.memorymanagement;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -12,7 +12,7 @@ class Scheduler{
     
     public void vai(PCB get_Process) throws InterruptedException{
 
-    Process process = get_Process.getProcess(0);
+    Proc process = get_Process.getProcess(0);
     Heap alloc_process = new Heap();
     Core execute = new Core();
 

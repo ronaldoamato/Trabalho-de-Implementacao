@@ -1,5 +1,5 @@
 
-package memorymanagement;
+package proj.esso.MemManagement.controller.memorymanagement;
 
 import java.util.Arrays;
 import java.util.concurrent.locks.Condition;
@@ -10,7 +10,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class Heap {
     private int memSize = 50;
     private boolean[] memTable = new boolean [memSize];
-    private Process[] memory = new Process[memSize];
+    private Proc[] memory = new Proc[memSize];
     private int size;
     
     private final Lock lock = new ReentrantLock();
@@ -33,7 +33,7 @@ public class Heap {
     }
 
     
-    public void alloc(Process process){ //Algoritmo first fit
+    public void alloc(Proc process){ //Algoritmo first fit
         int count = 0, i, j;
         
         for (i=0; i<memSize; i++) {
@@ -60,7 +60,7 @@ public class Heap {
         
     }
     
-    public void desalloc(Process process){
+    public void desalloc(Proc process){
         for (int i = 0; i<memSize; i++){
             if (memory[i] == process){
                 memTable[i] = false;

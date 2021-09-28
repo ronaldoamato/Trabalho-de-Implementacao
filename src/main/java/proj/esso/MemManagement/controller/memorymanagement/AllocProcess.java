@@ -1,14 +1,14 @@
 
-package memorymanagement;
+package proj.esso.MemManagement.controller.memorymanagement;
 
 
 public class AllocProcess {
     
-    private Process process;
+    private Proc process;
     private int start;
     private int end;
 
-    public Process getProcess() {
+    public Proc getProcess() {
         return process;
     }
 
@@ -20,7 +20,7 @@ public class AllocProcess {
         return end;
     }
 
-    public void setProcess(Process process) {
+    public void setProcess(Proc process) {
         this.process = process;
     }
 
