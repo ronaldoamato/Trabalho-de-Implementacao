@@ -5,9 +5,22 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 //class Scheduler implements Runnable{
-class Scheduler{
+class Scheduler{ //round robin
 
-    
+    private int quantum;
+
+    public Scheduler(int quantum)
+    {
+        this.quantum = quantum;
+    }
+
+    void run(CPU cpu, PCB pcb, proj.esso.MemManagement.controller.memorymanagement.sync.Logger logger) throws NoProcessException, InterruptedException
+    {
+        pcb.changeQueue(currentQueue, newQueue, logger);
+
+
+    } 
+
     public void vai(PCB get_Process) throws InterruptedException{
 
     Proc process = get_Process.getProcess(0);
