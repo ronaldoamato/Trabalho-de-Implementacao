@@ -1,5 +1,5 @@
 
-package proj.esso.MemManagement.controller.memorymanagement;
+package proj.esso.MemManagement.controller.memorymanagement.sync;
 
 public class MemoryManagement {
     
@@ -37,7 +37,7 @@ public class MemoryManagement {
         this.randomProcessGenerator = new RandomProcessGenerator();
         this.pcb = new PCB();
         this.logger = new Logger();
-        this.cpu = new CPU(this.quantum, 1);
+        this.cpu = new CPU(1);
     }
 
     private void genProcesses(Logger logger)
@@ -54,6 +54,18 @@ public class MemoryManagement {
             logger.addLog(String.format("CREATED PROCESS: { %s }", process.getData()));
             this.pcb.setProcess(process, 0,  logger);
             this.numReq--;
+        }
+    }
+
+    private void consumeProcesses(Logger logger)
+    {
+        while(this.pcb.ready.size() > 0 )
+        {
+
+            this.cpu.run(
+                this.pcb.getProcess(0, logger);
+            );
+
         }
     }
 

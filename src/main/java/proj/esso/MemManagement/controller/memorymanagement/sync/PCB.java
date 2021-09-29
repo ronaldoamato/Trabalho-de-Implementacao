@@ -1,5 +1,5 @@
 
-package proj.esso.MemManagement.controller.memorymanagement;
+package proj.esso.MemManagement.controller.memorymanagement.sync;
 
 import java.util.LinkedList;
 
@@ -15,9 +15,9 @@ class NoProcessException extends Exception
 
 
 class PCB {
-    public LinkedList <Proc> ready;
-    public LinkedList <Proc> running;
-    public LinkedList <Proc> terminated;
+    private LinkedList <Proc> ready;
+    private LinkedList <Proc> running;
+    private LinkedList <Proc> terminated;
 
     public PCB()
     {
@@ -31,7 +31,7 @@ class PCB {
 //        this.ready.add(process);
 //    }
     
-    Proc getProcess (int queue, Logger logger) throws NoProcessException
+    private Proc changeQueueAux (int queue) throws NoProcessException
     {
         try
         {
@@ -42,29 +42,25 @@ class PCB {
                 case 0 :
                 {
                     process = this.ready.getFirst();
-                    this.ready.remove();
-                    logger.addLog(String.format("GOT PROCESS({ %s }) FROM READY QUEUE", process.getData()));
+                    this.ready.removeFirst();
                     break;
                 }
                 case 1 :
                 {
                     process = this.running.getFirst();
-                    this.running.remove();
-                    logger.addLog(String.format("GOT PROCESS({ %s }) FROM RUNNING QUEUE", process.getData()));
+                    this.running.removeFirst();
                     break;
                 }
                 case 2 :
                 {
                     process = this.terminated.getFirst();
-                    this.terminated.remove();
-                    logger.addLog(String.format("GOT PROCESS({ %s }) FROM TERMINATED QUEUE", process.getData()));
+                    this.terminated.removeFirst();
                     break;
                 }
                 default: break;
             }
             if(process == null)
             {
-                logger.addLog(String.format("ERROR: NO PROCESS FOUND ON QUEUE "));
                 throw new NoProcessException();
             }
             return process;
@@ -74,57 +70,61 @@ class PCB {
             return null;
         }
 
-//        if (queue == 0)
-//        {
-//            if (ready.isEmpty()){
-//                return null;
-//            }
-//            return ready.getFirst();
-//        }
-//        if (queue == 1)
-//        {
-//            if (running.isEmpty()){
-//                return null;
-//            }
-//            return running.getFirst();
-//        }
-//        if (queue == 2)
-//        {
-//            if (terminated.isEmpty()){
-//                return null;
-//            }
-//            return terminated.getFirst();
-//        }
-//        return null;
     }
 
-    void setProcess(Proc process, int queue, Logger logger)
+    private String getQueueName(int queue)
     {
-        switch (queue)
+        String name = "";
+        switch(queue)
+        {
+            case 0 : name = "READY"; break;
+            case 1 : name = "RUNNING"; break;
+            case 2 : name = "TERMINATED"; break;
+            default : break;
+        }
+
+        return name;
+    }
+
+    void changeQueue(int currentQueue, int newQueue, Logger logger) throws NoProcessException
+    {
+        
+        Proc process = this.changeQueueAux(currentQueue);
+        String currentQueueName = this.getQueueName(currentQueue);
+        switch (newQueue)
         {
             case 0:
             {
-                this.ready.add(process);
-                logger.addLog(String.format("SET PROCESS({ %s }) INTO READY QUEUE", process.getData()));
+                this.ready.addLast(process);
                 process.setQueue(0);
+                logger.addLog(String.format("CHANGED PROCESS({ %s }) FROM %s TO READY", process.getData(), currentQueueName));
                 break;
             }
             case 1:
             {
-                this.running.add(process);
-                logger.addLog(String.format("SET PROCESS({ %s }) INTO RUNNING QUEUE", process.getData()));
+                this.running.addLast(process);
                 process.setQueue(1);
+                logger.addLog(String.format("CHANGED PROCESS({ %s }) FROM %s TO RUNNING", process.getData(), currentQueueName));
                 break;
             }
             case 2:
             {
                 this.terminated.add(process);
-                logger.addLog(String.format("SET PROCESS({ %s }) INTO TERMINATED QUEUE", process.getData(), queue));
                 process.setQueue(2);
+                logger.addLog(String.format("CHANGED PROCESS({ %s }) FROM %s TO TERMINATED", process.getData(), currentQueueName));
                 break;
             }
             default : break;
         }
+        
+    }
+
+    LinkedList<Proc> getQueue(int queue)
+    {
+        if(queue == 0) return this.ready;
+        if(queue == 1) return this.running;
+        if(queue == 2) return this.terminated;
+        return null;
     }
 
     

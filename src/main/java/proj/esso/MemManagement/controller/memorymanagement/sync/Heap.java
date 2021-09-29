@@ -1,5 +1,5 @@
 
-package proj.esso.MemManagement.controller.memorymanagement;
+package proj.esso.MemManagement.controller.memorymanagement.sync;
 
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;

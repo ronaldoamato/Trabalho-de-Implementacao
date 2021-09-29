@@ -4,7 +4,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import proj.esso.MemManagement.controller.memorymanagement.MemoryManagement;
+
+import proj.esso.MemManagement.controller.memorymanagement.sync.MemoryManagement;
 
 @RestController
 @RequestMapping("/api")
@@ -21,6 +22,10 @@ public class Index {
         @RequestParam(name = "heapSize", defaultValue = "-1") int heapSize
     )
     {
+        if(minSize == -1 || maxSize == -1 || minTime == -1 || maxTime == -1 || numReq == -1 || quantum == -1 || heapSize == -1)
+        {
+            return "Error: Invalid Parameters";
+        }
         MemoryManagement memManagement = new MemoryManagement(maxSize, minSize, maxTime, minTime, numReq, quantum, heapSize );
         memManagement.run();
 

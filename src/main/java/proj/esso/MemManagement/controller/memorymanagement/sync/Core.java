@@ -1,5 +1,5 @@
 
-package proj.esso.MemManagement.controller.memorymanagement;
+package proj.esso.MemManagement.controller.memorymanagement.sync;
 
 import static java.lang.Thread.sleep;
 
