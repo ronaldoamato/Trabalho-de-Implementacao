@@ -3,59 +3,54 @@ package proj.esso.MemManagement.controller.memorymanagement;
 
 public class Proc {
 
-    private int memSize, execTime, queue, mem, priority;
     private String id;
+    private int memSize, execTime, currentQueue;
+    private int currentMem;
     
-    
-    public Proc(){
-        
-    }
-    
-    public Proc(int mem, int time, String id, int priority)
+    public Proc(int mem, int time)
     {
         this.memSize = mem;
         this.execTime = time;
-        this.id = id;
-        this.queue = 0;
-        this.priority = priority;
-        
+        this.currentQueue = 0;
+        this.currentMem = 0; //0: not allocated; 1: heap; 2: swap
     }
 
-    public int getMem() {
-        return mem;
+    void setQueue(int currentQueue) {
+        this.currentQueue = currentQueue;
     }
 
-    public int getPriority() {
-        return priority;
+    int getQueue() {
+        return currentQueue;
     }
 
-    public void setQueue(int queue) {
-        this.queue = queue;
-    }
-
-    public int getQueue() {
-        return queue;
-    }
-
-    public int getMemSize() {
+    int getMemSize() {
         return memSize;
     }
 
-    public int getExecTime() {
+    int getExecTime() {
         return execTime;
     }
 
-    public String getId() {
+    String getId() {
         return id;
     }
+
+    void setId(String id){ this.id = id; }
     
-    public void setExecTime(int execTime) {
+    void setExecTime(int execTime) {
         this.execTime = execTime;
     }
+
+    int getCurrentMem(){ return this.currentMem; }
+
+    void setCurrentMem(int newMem){ this.currentMem = newMem; }
     
-    public String toString()
+    public String getData()
     {
-        return this.id+"\n"+execTime+"\n"+memSize+"\n"+priority+"\n";
-        
+        return String.format("id: %s, memSize: %d, execTime: %d, currentQueue: %d",
+                this.id,
+                this.memSize,
+                this.execTime,
+                this.currentQueue);
     }
 }

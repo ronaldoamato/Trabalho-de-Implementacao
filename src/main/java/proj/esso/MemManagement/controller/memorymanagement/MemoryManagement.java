@@ -13,26 +13,59 @@ public class MemoryManagement {
    */
     private int maxSize;
     private int minSize;
+    private int minTime;
+    private int maxTime;
     private int numReq;
-    private RandomProcessGenerator processGen;
+    private int heapSize;
+    private  int quantum;
+    private RandomProcessGenerator randomProcessGenerator;
     private PCB pcb;
     private Scheduler scheduler;
     private Logger logger;
+    private CPU cpu;
 
 
-    public MemoryManagement(int maxSize, int minSize, int numReq)
+    public MemoryManagement(int maxSize, int minSize, int maxTime, int minTime, int numReq, int quantum, int heapSize)
     {
         this.maxSize = maxSize;
         this.minSize = minSize;
+        this.minTime = minTime;
+        this.maxTime = maxTime;
         this.numReq = numReq;
+        this.quantum = quantum;
+        this.heapSize = heapSize;
+        this.randomProcessGenerator = new RandomProcessGenerator();
+        this.pcb = new PCB();
         this.logger = new Logger();
+        this.cpu = new CPU(this.quantum, 1);
+    }
+
+    private void genProcesses(Logger logger)
+    {
+        Proc process;
+        while(this.numReq > 0)
+        {
+            process = this.randomProcessGenerator.gen(
+                    this.minSize,
+                    this.maxSize,
+                    this.minTime,
+                    this.maxTime
+            );
+            logger.addLog(String.format("CREATED PROCESS: { %s }", process.getData()));
+            this.pcb.setProcess(process, 0,  logger);
+            this.numReq--;
+        }
     }
 
     public void run() {
 
-        this.logger.addLog("================= Started =================");
+        this.logger.addLog("================= STARTED =================");
 
-        this.processGen = new RandomProcessGenerator(minSize, maxSize, numReq);
+        this.genProcesses(logger);
+
+
+
+
 
 //        ExecutorService threadExecutor = Executors.newCachedThreadPool();
 //
@@ -47,7 +80,7 @@ public class MemoryManagement {
 //        //}
 //        threadExecutor.shutdown();
 
-        this.logger.addLog("================= Finished =================");
+        this.logger.addLog("================= FINISHED =================");
         //threadExecutor.execute(play);
     }
 

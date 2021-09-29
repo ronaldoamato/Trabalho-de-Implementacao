@@ -4,13 +4,25 @@ package proj.esso.MemManagement.controller.memorymanagement;
 import static java.lang.Thread.sleep;
 
 
-public class Core {
-   
-    public void exec(Proc process) throws InterruptedException{
-        int time = process.getExecTime();
-        time = time - 10;
-        sleep(10);
-        process.setExecTime(time);
+class Core {
+
+    private boolean running;
+
+    public Core()
+    {
+        this.running = false;
     }
+
+   
+    public Proc exec(Proc process, int quantum) throws InterruptedException{
+
+        int time = ((process.getExecTime() - quantum));
+        time = (time <= 0) ? 0 : time;
+        sleep(quantum);
+        process.setExecTime(time);
+        return process;
+    }
+
+    boolean getRunning(){ return this.running; }
     
 }

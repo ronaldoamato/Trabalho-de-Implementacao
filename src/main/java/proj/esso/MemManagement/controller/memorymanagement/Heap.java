@@ -1,7 +1,6 @@
 
 package proj.esso.MemManagement.controller.memorymanagement;
 
-import java.util.Arrays;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;

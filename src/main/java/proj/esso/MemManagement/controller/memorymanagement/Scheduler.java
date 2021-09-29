@@ -6,9 +6,7 @@ import java.util.logging.Logger;
 
 //class Scheduler implements Runnable{
 class Scheduler{
-    
-    
-    PCB set_Process = new PCB();
+
     
     public void vai(PCB get_Process) throws InterruptedException{
 

@@ -10,14 +10,18 @@ import proj.esso.MemManagement.controller.memorymanagement.MemoryManagement;
 @RequestMapping("/api")
 public class Index {
 
-    @GetMapping("/")
+    @GetMapping("/sync")
     public String index(
         @RequestParam(name = "minSize", defaultValue = "-1") int minSize,
         @RequestParam(name = "maxSize", defaultValue = "-1") int maxSize,
-        @RequestParam(name = "numReq", defaultValue = "-1") int numReq
+        @RequestParam(name = "minTime", defaultValue = "-1") int minTime,
+        @RequestParam(name = "maxTime", defaultValue = "-1") int maxTime,
+        @RequestParam(name = "numReq", defaultValue = "-1") int numReq,
+        @RequestParam(name = "quantum", defaultValue = "-1") int quantum,
+        @RequestParam(name = "heapSize", defaultValue = "-1") int heapSize
     )
     {
-        MemoryManagement memManagement = new MemoryManagement(maxSize, minSize, numReq);
+        MemoryManagement memManagement = new MemoryManagement(maxSize, minSize, maxTime, minTime, numReq, quantum, heapSize );
         memManagement.run();
 
         return memManagement.getLog();
