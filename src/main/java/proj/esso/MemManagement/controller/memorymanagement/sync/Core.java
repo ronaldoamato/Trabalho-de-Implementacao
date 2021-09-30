@@ -8,19 +8,19 @@ class Core {
 
     private boolean running;
 
-    public Core()
+    Core()
     {
         this.running = false;
     }
 
    
-    public Proc exec(Proc process, int quantum) throws InterruptedException{
-
+    void exec(Proc process, int quantum) throws InterruptedException{
+        this.running = true;
         int time = ((process.getExecTime() - quantum));
         time = (time <= 0) ? 0 : time;
         sleep(quantum);
         process.setExecTime(time);
-        return process;
+        this.running = false;
     }
 
     boolean getRunning(){ return this.running; }

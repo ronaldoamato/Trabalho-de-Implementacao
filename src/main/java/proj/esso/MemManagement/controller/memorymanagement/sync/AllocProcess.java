@@ -1,35 +1,30 @@
 
-package proj.esso.MemManagement.controller.memorymanagement;
+package proj.esso.MemManagement.controller.memorymanagement.sync;
 
-
-public class AllocProcess {
+class AllocProcess extends Alloc {
     
     private Proc process;
-    private int start;
-    private int end;
+    private int uses;
 
-    public Proc getProcess() {
-        return process;
+    public AllocProcess(int start, int offset, Proc process)
+    {
+        super(start, offset);
+        this.process = process;
+        this.uses = 0;
+
     }
 
-    public int getStart() {
-        return start;
+    Proc getProcess() {
+        return this.process;
     }
 
-    public int getEnd() {
-        return end;
-    }
+    int getUses(){return this.uses;}
+    void setUses(int uses){this.uses = uses;}
 
-    public void setProcess(Proc process) {
+
+    void setProcess(Proc process) {
         this.process = process;
     }
 
-    public void setStart(int start) {
-        this.start = start;
-    }
-
-    public void setEnd(int end) {
-        this.end = end;
-    }
     
 }

@@ -1,12 +1,77 @@
-
 package proj.esso.MemManagement.controller.memorymanagement.sync;
 
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.Lock;
-import java.util.concurrent.locks.ReentrantLock;
-
+import java.util.LinkedList;
 
 public class Heap {
+    private LinkedList<Alloc> freeSpace;
+    private LinkedList<AllocProcess> occupiedSpace;
+    private int usedSpace;
+    private int threshold;
+    private int memSize;
+
+    public Heap(double threshold, int memSize)
+    {
+        this.freeSpace = new LinkedList<Alloc>();
+        this.freeSpace.add(new Alloc(0, memSize - 1));
+        this.occupiedSpace = new LinkedList<AllocProcess>();
+        this.memSize = memSize;
+        this.usedSpace = 0;
+        this.threshold = (int) (((double) memSize) * threshold);
+    }
+
+    private boolean checkThreshold() //true: needs to clear mem;
+    {
+        return usedSpace < threshold;
+    }
+
+    private int getLeastUsed()
+    {
+        int leastUsed = this.occupiedSpace.get(0).getUses();
+        int leastUsedIndex = 0;
+
+        for(int i = 0; i < this.occupiedSpace.size(); i++)
+        {
+            if(leastUsed > this.occupiedSpace.get(i).getUses())
+            {
+                leastUsed = this.occupiedSpace.get(i).getUses();
+                leastUsedIndex = i;
+            }
+        }
+
+        return leastUsedIndex;
+    }
+
+    private void removeAllocProcesses()
+    {
+
+        while(usedSpace > threshold)
+        {
+
+        }
+    }
+
+
+    private void defrag()
+    {
+        int startOffset = 0;
+        this.freeSpace.clear();
+
+        for(AllocProcess allocProcess : occupiedSpace)
+        {
+            allocProcess.setStart(startOffset);
+            startOffset += allocProcess.getOffset();
+            allocProcess.setOffset(startOffset - 1);
+        }
+
+        this.freeSpace.add(new Alloc(startOffset, this.memSize - 1));
+    }
+
+
+
+
+
+
+
     private int memSize = 50;
     private boolean[] memTable = new boolean [memSize];
     private Proc[] memory = new Proc[memSize];
@@ -19,7 +84,7 @@ public class Heap {
     private boolean read = false, write = false;
     
     
-    public Heap(){
+    public Heap(int memSize){
         
     }
     

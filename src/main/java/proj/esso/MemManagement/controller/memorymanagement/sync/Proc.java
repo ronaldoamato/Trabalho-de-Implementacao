@@ -5,7 +5,7 @@ public class Proc {
 
     private String id;
     private int memSize, execTime, currentQueue;
-    private int currentMem;
+    private int currentMem; //0: not allocated; 1: heap; 2: swap
     
     public Proc(int mem, int time)
     {

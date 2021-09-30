@@ -59,12 +59,8 @@ public class MemoryManagement {
 
     private void consumeProcesses(Logger logger)
     {
-        while(this.pcb.ready.size() > 0 )
+        while(this.pcb.getQueue(0).size() > 0)
         {
-
-            this.cpu.run(
-                this.pcb.getProcess(0, logger);
-            );
 
         }
     }

@@ -16,10 +16,10 @@ class CPU {
         }
     }
 
-    Proc run(Proc process, int quantum, Logger logger) throws InterruptedException
+    void run(Proc process, int quantum, Logger logger) throws InterruptedException
     {
         this.cores.get(0).exec(process, quantum);
-        return process;
+        logger.addLog(String.format("PROCESS({ %s }) EXECUTED FOR %d ms", process.getData(), quantum));
     }
 
 
