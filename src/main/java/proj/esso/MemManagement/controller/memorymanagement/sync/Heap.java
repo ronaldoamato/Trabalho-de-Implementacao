@@ -58,7 +58,6 @@ public class Heap {
         }
     }
 
-
     private void defrag()
     {
         int startOffset = 0;
@@ -74,7 +73,89 @@ public class Heap {
         this.freeSpace.add(new Alloc(startOffset, this.memSize - 1));
     }
 
-    void
+    private int findProcessById(String id)
+    {
+        int index = 0;
+        for(int i = 0; i < this.occupiedSpace.size() ; i ++)
+        {
+            if(this.occupiedSpace.get(i).getProcess().getId().equals(id))
+            {
+                index = i;
+            }
+        }
+
+        return index;
+    }
+
+
+    private AllocProcess findFreeSpace(int memSize)
+    {
+        int index = -1;
+
+        for(int i = 0 ; i < this.freeSpace.size(); i++)
+        {
+            if(this.freeSpace.get(index).getOffset() < memSize - 1)
+            {
+                index = i;
+            }
+        }
+
+        if(index == -1)
+        {
+            this.defrag();
+            this.findFreeSpace(memSize);
+        }
+
+        int start = this.freeSpace.get(index).getStart();
+
+        AllocProcess allocProcess = new AllocProcess(start,memSize - 1);
+        this.freeSpace.get(index).setStart(start + memSize);
+
+        return allocProcess;
+    }
+
+    void allocProcess(Proc process, Swap swap, Logger logger)
+    {
+        if(this.checkThreshold())
+        {
+            logger.addLog(String.format("HEAP AT %d CAPACITY", this.usedSpace/this.memSize));
+            removeAllocProcesses(swap); //clears memory until threshold
+        }
+
+        switch (process.getCurrentMem())
+        {
+            case 0 : {
+                AllocProcess allocProcess = this.findFreeSpace(process.getMemSize());
+                allocProcess.setProcess(process);
+                process.setCurrentMem(1);
+                allocProcess.setUses(allocProcess.getUses() + 1);
+                this.occupiedSpace.add(allocProcess);
+                this.usedSpace += process.getMemSize();
+                logger.addLog(String.format("PROCESS({ %s }) ALLOCATED ON HEAP AT POS %d WITH OFFSET %d (%d:%d)", process.getData(), allocProcess.getStart(), allocProcess.getOffset(), allocProcess.getStart() + allocProcess.getOffset()));
+                break;
+            }
+            case 1 : {
+                AllocProcess allocProcess = this.occupiedSpace.get(this.findProcessById(process.getId()));
+                allocProcess.setUses(allocProcess.getUses() + 1);
+                logger.addLog(String.format("PROCESS({ %s }) ALREADY ALLOCATED ON HEAP AT POS %d WITH OFFSET %d (%d:%d)", process.getData(), allocProcess.getStart(), allocProcess.getOffset(), allocProcess.getStart() + allocProcess.getOffset()));
+                break;
+            }
+            case 2: {
+                int swapProcessIndex = swap.findById(process.getId());
+                Proc swapProcess = swap.getSwapMem().get(swapProcessIndex);
+                AllocProcess allocProcess = this.findFreeSpace(swapProcess.getMemSize());
+                allocProcess.setProcess(swapProcess);
+                this.usedSpace += swapProcess.getMemSize();
+                swapProcess.setCurrentMem(1);
+                allocProcess.setUses(allocProcess.getUses() + 1);
+                swap.getSwapMem().remove(swapProcessIndex);
+                logger.addLog(String.format("PROCESS({ %s }) BROUGHT FROM SWAP AND ALLOCATED INTO HEAP AT POS %d WITH OFFSET %d (%d:%d)", process.getData(), allocProcess.getStart(), allocProcess.getOffset(), allocProcess.getStart() + allocProcess.getOffset()));
+                break;
+            }
+            default: break;
+        }
+    }
+
 
 
 

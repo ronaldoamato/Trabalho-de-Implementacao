@@ -69,11 +69,14 @@ public class MemoryManagement {
         }
     }
 
-    public void run() {
+    public void run() throws NoProcessException, InterruptedException
+    {
 
         this.logger.addLog("================= STARTED =================");
 
         this.genProcesses(logger);
+
+        this.consumeProcesses(this.logger);
 
 
 

@@ -3,17 +3,6 @@ package proj.esso.MemManagement.controller.memorymanagement.sync;
 
 import java.util.LinkedList;
 
-class NoProcessException extends Exception
-{
-    public NoProcessException()
-    {
-        System.out.println("No process available");
-    }
-
-}
-
-
-
 class PCB {
     private LinkedList <Proc> ready;
     private LinkedList <Proc> running;

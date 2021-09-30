@@ -6,12 +6,10 @@ class AllocProcess extends Alloc {
     private Proc process;
     private int uses;
 
-    public AllocProcess(int start, int offset, Proc process)
+    public AllocProcess(int start, int offset)
     {
         super(start, offset);
-        this.process = process;
         this.uses = 0;
-
     }
 
     Proc getProcess() {

@@ -17,7 +17,7 @@ public class Swap {
         int index = -1;
         for(int i = 0 ; i < swapMem.size() ; i++)
         {
-            if(swapMem.get(i).getId() == id)
+            if(swapMem.get(i).getId().equals(id))
             {
                 index = i;
             }
