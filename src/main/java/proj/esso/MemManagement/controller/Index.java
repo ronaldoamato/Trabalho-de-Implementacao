@@ -19,14 +19,15 @@ public class Index {
         @RequestParam(name = "maxTime", defaultValue = "-1") int maxTime,
         @RequestParam(name = "numReq", defaultValue = "-1") int numReq,
         @RequestParam(name = "quantum", defaultValue = "-1") int quantum,
-        @RequestParam(name = "heapSize", defaultValue = "-1") int heapSize
+        @RequestParam(name = "heapSize", defaultValue = "-1") int heapSize,
+        @RequestParam(name = "heapThreshold", defaultValue = "-1") double heapThreshold
     )
     {
-        if(minSize == -1 || maxSize == -1 || minTime == -1 || maxTime == -1 || numReq == -1 || quantum == -1 || heapSize == -1)
+        if(minSize == -1 || maxSize == -1 || minTime == -1 || maxTime == -1 || numReq == -1 || quantum == -1 || heapSize == -1 || heapThreshold == -1)
         {
             return "Error: Invalid Parameters";
         }
-        MemoryManagement memManagement = new MemoryManagement(maxSize, minSize, maxTime, minTime, numReq, quantum, heapSize );
+        MemoryManagement memManagement = new MemoryManagement(maxSize, minSize, maxTime, minTime, numReq, quantum, heapSize, heapThreshold, 1 );
         memManagement.run();
 
         return memManagement.getLog();

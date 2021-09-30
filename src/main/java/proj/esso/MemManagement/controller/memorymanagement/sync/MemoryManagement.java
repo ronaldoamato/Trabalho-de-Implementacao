@@ -23,9 +23,11 @@ public class MemoryManagement {
     private Scheduler scheduler;
     private Logger logger;
     private CPU cpu;
+    private Heap heap;
+    private Swap swap;
 
 
-    public MemoryManagement(int maxSize, int minSize, int maxTime, int minTime, int numReq, int quantum, int heapSize)
+    public MemoryManagement(int maxSize, int minSize, int maxTime, int minTime, int numReq, int quantum, int heapSize, double heapThreshold, int numCores)
     {
         this.maxSize = maxSize;
         this.minSize = minSize;
@@ -37,7 +39,9 @@ public class MemoryManagement {
         this.randomProcessGenerator = new RandomProcessGenerator();
         this.pcb = new PCB();
         this.logger = new Logger();
-        this.cpu = new CPU(1);
+        this.heap = new Heap(heapThreshold, heapSize);
+        this.swap = new Swap();
+        this.cpu = new CPU(numCores);
     }
 
     private void genProcesses(Logger logger)
@@ -52,16 +56,16 @@ public class MemoryManagement {
                     this.maxTime
             );
             logger.addLog(String.format("CREATED PROCESS: { %s }", process.getData()));
-            this.pcb.setProcess(process, 0,  logger);
+            this.pcb.getQueue(0).add(process);
             this.numReq--;
         }
     }
 
-    private void consumeProcesses(Logger logger)
+    private void consumeProcesses(Logger logger) throws NoProcessException, InterruptedException
     {
         while(this.pcb.getQueue(0).size() > 0)
         {
-
+            this.scheduler.run(this.cpu, this.pcb, this.logger, this.heap, this.swap);
         }
     }
 

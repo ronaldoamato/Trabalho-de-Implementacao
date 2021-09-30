@@ -14,12 +14,13 @@ class Core {
     }
 
    
-    void exec(Proc process, int quantum) throws InterruptedException{
+    void exec(Proc process, int quantum, Logger logger, Heap heap, Swap swap, int coreNum) throws InterruptedException{
         this.running = true;
         int time = ((process.getExecTime() - quantum));
         time = (time <= 0) ? 0 : time;
         sleep(quantum);
         process.setExecTime(time);
+        logger.addLog(String.format("PROCESS({ %s }) EXECUTED FOR %dms AT CORE %d", process.getData(), quantum, coreNum));
         this.running = false;
     }
 

@@ -11,7 +11,7 @@ public class Swap {
         this.swapMem = new LinkedList<Proc>();
     }
 
-    Proc getById(String id)
+    int findById(String id)
     {
 
         int index = -1;
@@ -23,12 +23,17 @@ public class Swap {
             }
         }
 
-        return this.swapMem.get(index);
+        return index;
     }
 
     void addProcess(Proc process)
     {
         this.swapMem.add(process);
+    }
+
+    LinkedList<Proc> getSwapMem()
+    {
+        return this.swapMem;
     }
 
 

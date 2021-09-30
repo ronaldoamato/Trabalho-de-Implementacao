@@ -11,10 +11,10 @@ class Scheduler{ //round robin
         this.quantum = quantum;
     }
 
-    void run(CPU cpu, PCB pcb, Logger logger) throws NoProcessException, InterruptedException
+    void run(CPU cpu, PCB pcb, Logger logger, Heap heap, Swap swap) throws NoProcessException, InterruptedException
     {
         Proc process = pcb.changeQueue(0, 0, 1, logger);
-        cpu.run(process, quantum, logger);
+        cpu.run(process, quantum, logger, heap, swap);
 
         if(process.getExecTime() <= 0)
         {
